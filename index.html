@@ -7,52 +7,44 @@
   <title>VoxLux Hero Background</title>
 
   <!--
-    VoxLux Strategic — Hero Background
+    VoxLux Strategic — Hero Flythrough
     Pure visual layer. No text, no UI. Designed for a Wix Embed HTML iframe.
-    Renders an animated wireframe city in navy + gold + luminous white.
+    Renders a tilted-aerial flythrough of a wireframe city in black + gold.
+    Buildings draw themselves in on load, then the camera glides forward.
+    Mouse: tilts the camera, modulates speed, casts a warm gold light.
   -->
 
   <style>
-    /* Reset + iframe-fill */
     * { box-sizing: border-box; }
+
     html, body {
       margin: 0;
       padding: 0;
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #0B1E3F; /* Oxford Blue — same hex set in JS for consistency */
+      background: #000000;
+      cursor: crosshair;
     }
 
-    /* The canvas holds the entire animation. position:fixed so it always paints
-       full iframe dimensions even if the parent resizes. */
     #voxlux-canvas {
       position: fixed;
       inset: 0;
       width: 100%;
       height: 100%;
       display: block;
-      /* Soft vignette is painted in JS as part of the gradient stack —
-         no CSS overlay needed, which keeps the canvas the single paint layer. */
     }
 
-    /* Fallback for users with reduced motion or for the brief moment before
-       the canvas paints its first frame. Keeps Cumulative Layout Shift = 0. */
     .voxlux-fallback {
       position: fixed;
       inset: 0;
-      background:
-        radial-gradient(ellipse 80% 60% at 50% 40%,
-          rgba(201, 162, 75, 0.08) 0%,
-          rgba(11, 30, 63, 0) 60%),
-        linear-gradient(180deg, #0B1E3F 0%, #061528 100%);
+      background: #000;
       z-index: -1;
     }
 
-    /* Respect user accessibility preference. The JS also reads this and
-       falls back to a still composition. */
     @media (prefers-reduced-motion: reduce) {
-      #voxlux-canvas { opacity: 0.85; }
+      #voxlux-canvas { opacity: 0.9; }
+      html, body { cursor: default; }
     }
   </style>
 </head>
@@ -60,7 +52,6 @@
   <div class="voxlux-fallback" aria-hidden="true"></div>
   <canvas id="voxlux-canvas" aria-hidden="true"></canvas>
 
-  <!-- Animation engine. Defer keeps it non-blocking. -->
   <script src="hero.background.js" defer></script>
 </body>
 </html>
