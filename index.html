@@ -2,97 +2,65 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0, viewport-fit=cover"
-  />
-  <title>VoxLux Hero</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+  <meta name="color-scheme" content="dark" />
+  <title>VoxLux Hero Background</title>
+
+  <!--
+    VoxLux Strategic — Hero Background
+    Pure visual layer. No text, no UI. Designed for a Wix Embed HTML iframe.
+    Renders an animated wireframe city in navy + gold + luminous white.
+  -->
 
   <style>
-    html,
-    body {
+    /* Reset + iframe-fill */
+    * { box-sizing: border-box; }
+    html, body {
       margin: 0;
+      padding: 0;
       width: 100%;
       height: 100%;
       overflow: hidden;
-      background: #040404;
+      background: #0B1E3F; /* Oxford Blue — same hex set in JS for consistency */
     }
 
-    body {
-      position: relative;
-      background:
-        radial-gradient(circle at 50% 38%, rgba(212, 175, 55, 0.08) 0%, rgba(212, 175, 55, 0) 34%),
-        linear-gradient(180deg, #090909 0%, #040404 45%, #010101 100%);
-    }
-
-    #hero {
-      position: relative;
-      width: 100%;
-      height: 100vh;
-      min-height: 520px;
-      overflow: hidden;
-      isolation: isolate;
-      background: transparent;
-    }
-
-    #hero-canvas {
-      position: absolute;
+    /* The canvas holds the entire animation. position:fixed so it always paints
+       full iframe dimensions even if the parent resizes. */
+    #voxlux-canvas {
+      position: fixed;
       inset: 0;
       width: 100%;
       height: 100%;
       display: block;
+      /* Soft vignette is painted in JS as part of the gradient stack —
+         no CSS overlay needed, which keeps the canvas the single paint layer. */
     }
 
-    #hero::before {
-      content: "";
-      position: absolute;
+    /* Fallback for users with reduced motion or for the brief moment before
+       the canvas paints its first frame. Keeps Cumulative Layout Shift = 0. */
+    .voxlux-fallback {
+      position: fixed;
       inset: 0;
-      pointer-events: none;
       background:
-        radial-gradient(circle at 50% 45%, rgba(214, 175, 101, 0.09) 0%, rgba(214, 175, 101, 0) 36%),
-        linear-gradient(180deg, rgba(255,255,255,0.025) 0%, rgba(0,0,0,0.12) 100%);
-      mix-blend-mode: screen;
-      z-index: 2;
+        radial-gradient(ellipse 80% 60% at 50% 40%,
+          rgba(201, 162, 75, 0.08) 0%,
+          rgba(11, 30, 63, 0) 60%),
+        linear-gradient(180deg, #0B1E3F 0%, #061528 100%);
+      z-index: -1;
     }
 
-    #hero::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      pointer-events: none;
-      background:
-        radial-gradient(circle at center, rgba(0,0,0,0) 52%, rgba(0,0,0,0.48) 100%);
-      z-index: 3;
-    }
-
-    .grain {
-      position: absolute;
-      inset: -50%;
-      pointer-events: none;
-      z-index: 4;
-      opacity: 0.03;
-      background-image:
-        radial-gradient(circle, rgba(255,255,255,0.9) 0.6px, transparent 0.7px);
-      background-size: 8px 8px;
-      mix-blend-mode: soft-light;
-      animation: grainShift 10s steps(10) infinite;
-    }
-
-    @keyframes grainShift {
-      0% { transform: translate(0, 0); }
-      25% { transform: translate(-1%, 1%); }
-      50% { transform: translate(1%, -1%); }
-      75% { transform: translate(-1%, -1%); }
-      100% { transform: translate(0, 0); }
+    /* Respect user accessibility preference. The JS also reads this and
+       falls back to a still composition. */
+    @media (prefers-reduced-motion: reduce) {
+      #voxlux-canvas { opacity: 0.85; }
     }
   </style>
 </head>
 <body>
-  <div id="hero" aria-hidden="true">
-    <canvas id="hero-canvas"></canvas>
-    <div class="grain"></div>
-  </div>
+  <div class="voxlux-fallback" aria-hidden="true"></div>
+  <canvas id="voxlux-canvas" aria-hidden="true"></canvas>
 
-  <script src="./hero.background.js"></script>
+  <!-- Animation engine. Defer keeps it non-blocking. -->
+  <script src="hero.background.js" defer></script>
 </body>
 </html>
