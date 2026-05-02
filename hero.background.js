@@ -21,9 +21,6 @@ class VoxluxHero extends HTMLElement {
           min-height: 100%;
           background: radial-gradient(ellipse at 50% 30%, #0E141C 0%, #07090D 55%, #030406 100%);
           overflow: hidden;
-          display: flex;
-          align-items: center;
-          justify-content: center;
           cursor: default;
         }
 
@@ -100,263 +97,25 @@ class VoxluxHero extends HTMLElement {
           background: radial-gradient(ellipse at center, transparent 42%, rgba(3, 4, 6, 0.6) 100%);
         }
 
-        .content {
-          position: relative;
-          z-index: 10;
-          text-align: center;
-          padding: 2rem 1.75rem;
-          max-width: 1080px;
-          width: 100%;
-          color: #F5F1E8;
-          -webkit-font-smoothing: antialiased;
-          -moz-osx-font-smoothing: grayscale;
-          font-family: Georgia, "Times New Roman", serif;
-        }
-
-        .eyebrow {
-          display: inline-flex;
-          align-items: center;
-          gap: 0.85rem;
-          font-family: Arial, sans-serif;
-          font-weight: 400;
-          font-size: 0.68rem;
-          letter-spacing: 0.42em;
-          text-transform: uppercase;
-          color: rgba(245, 241, 232, 0.7);
-          margin-bottom: 1.75rem;
-          opacity: 0;
-          animation: fadeIn 900ms ease-out forwards;
-          animation-delay: 100ms;
-          text-shadow: 0 0 24px rgba(3, 4, 6, 0.8);
-        }
-
-        .eyebrow .bar {
-          display: inline-block;
-          width: 28px;
-          height: 1px;
-          background: rgba(201, 162, 75, 0.7);
-        }
-
-        .brand-mark {
-          font-weight: 700;
-          font-size: clamp(3.25rem, 9vw, 7.5rem);
-          line-height: 0.98;
-          letter-spacing: -0.02em;
-          margin: 0 auto 0.6rem;
-          opacity: 0;
-          transform: translateY(28px);
-          animation: fadeUp 1200ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-          animation-delay: 200ms;
-          text-shadow: 0 4px 50px rgba(3, 4, 6, 0.95), 0 0 90px rgba(201, 162, 75, 0.12);
-        }
-
-        .brand-mark .voxlux {
-          color: #F5F1E8;
-          font-weight: 700;
-        }
-
-        .brand-mark .strategic {
-          color: #C9A24B;
-          font-style: italic;
-          font-weight: 600;
-          letter-spacing: -0.01em;
-        }
-
-        .divider {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 0.85rem;
-          margin: 1.5rem auto 1.75rem;
-          opacity: 0;
-          animation: fadeIn 900ms ease-out forwards;
-          animation-delay: 450ms;
-        }
-
-        .divider .line {
-          width: 56px;
-          height: 1px;
-          background: linear-gradient(90deg, transparent, rgba(201, 162, 75, 0.8), transparent);
-        }
-
-        .divider .dot {
-          width: 5px;
-          height: 5px;
-          border-radius: 50%;
-          background: #C9A24B;
-          box-shadow: 0 0 12px rgba(201, 162, 75, 0.7);
-        }
-
-        .subhead {
-          font-weight: 600;
-          font-style: italic;
-          font-size: clamp(1.1rem, 2vw, 1.6rem);
-          line-height: 1.45;
-          color: rgba(245, 241, 232, 0.92);
-          max-width: 720px;
-          margin: 0 auto 2.75rem;
-          opacity: 0;
-          transform: translateY(20px);
-          animation: fadeUp 1100ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-          animation-delay: 500ms;
-          text-shadow: 0 2px 28px rgba(3, 4, 6, 0.9);
-        }
-
-        .subhead .accent {
-          color: #C9A24B;
-        }
-
-        .cta-wrap {
-          opacity: 0;
-          transform: translateY(20px);
-          animation: fadeUp 1100ms cubic-bezier(0.22, 1, 0.36, 1) forwards;
-          animation-delay: 800ms;
-        }
-
-        .cta {
-          position: relative;
-          display: inline-flex;
-          align-items: center;
-          gap: 0.65rem;
-          font-family: Arial, sans-serif;
-          font-weight: 500;
-          font-size: 0.88rem;
-          letter-spacing: 0.16em;
-          text-transform: uppercase;
-          color: #07090D;
-          background: #C9A24B;
-          padding: 1.05rem 2.5rem;
-          border-radius: 2px;
-          text-decoration: none;
-          overflow: hidden;
-          isolation: isolate;
-          transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1),
-                      box-shadow 350ms ease,
-                      background-color 350ms ease;
-          box-shadow: 0 8px 32px rgba(201, 162, 75, 0.3),
-                      inset 0 0 0 1px rgba(245, 241, 232, 0.1);
-        }
-
-        .cta::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(110deg, transparent 30%, rgba(245, 241, 232, 0.45) 50%, transparent 70%);
-          transform: translateX(-120%);
-          transition: transform 700ms cubic-bezier(0.22, 1, 0.36, 1);
-          z-index: -1;
-        }
-
-        .cta:hover {
-          transform: translateY(-2px);
-          background: #D4AE5A;
-          box-shadow: 0 14px 42px rgba(201, 162, 75, 0.42),
-                      inset 0 0 0 1px rgba(245, 241, 232, 0.14);
-        }
-
-        .cta:hover::before { transform: translateX(120%); }
-
-        .cta:focus-visible {
-          outline: 2px solid #F5F1E8;
-          outline-offset: 4px;
-        }
-
-        .cta .arrow {
-          display: inline-block;
-          transition: transform 350ms cubic-bezier(0.22, 1, 0.36, 1);
-        }
-
-        .cta:hover .arrow { transform: translateX(5px); }
-
-        @keyframes fadeUp {
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes fadeIn {
-          to { opacity: 1; }
-        }
-
         @media (max-width: 768px) {
-          .content { padding: 1.5rem 1.25rem; }
-          .eyebrow {
-            font-size: 0.6rem;
-            letter-spacing: 0.32em;
-            margin-bottom: 1.25rem;
-            gap: 0.65rem;
-          }
-          .eyebrow .bar { width: 20px; }
-          .brand-mark { font-size: clamp(2.5rem, 11vw, 4.5rem); }
-          .divider { margin: 1.1rem auto 1.4rem; }
-          .divider .line { width: 38px; }
-          .subhead {
-            font-size: clamp(1rem, 4vw, 1.2rem);
-            line-height: 1.5;
-            margin-bottom: 2.25rem;
-          }
-          .cta {
-            padding: 0.95rem 1.85rem;
-            font-size: 0.78rem;
-            letter-spacing: 0.14em;
-          }
           .spotlight {
             width: 460px;
             height: 460px;
           }
         }
 
-        @media (max-width: 480px) {
-          .brand-mark { font-size: clamp(2.1rem, 13vw, 3.2rem); }
-        }
-
         @media (prefers-reduced-motion: reduce) {
-          .brand-mark, .subhead, .cta-wrap, .eyebrow, .divider {
-            animation: none;
-            opacity: 1;
-            transform: none;
-          }
           .stars { animation: none; }
           .spotlight { display: none; }
         }
       </style>
 
-      <section class="hero" id="hero" role="banner" aria-label="VoxLux Strategic hero">
+      <section class="hero" id="hero" aria-label="VoxLux city background">
         <div class="stars" aria-hidden="true"></div>
         <canvas id="city-canvas" aria-hidden="true"></canvas>
         <div class="atmosphere" aria-hidden="true"></div>
         <div class="spotlight" id="spotlight" aria-hidden="true"></div>
         <div class="vignette" aria-hidden="true"></div>
-
-        <div class="content">
-          <div class="eyebrow">
-            <span class="bar" aria-hidden="true"></span>
-            <span>Presence. Perception. Precision.</span>
-            <span class="bar" aria-hidden="true"></span>
-          </div>
-
-          <h1 class="brand-mark">
-            <span class="voxlux">VoxLux</span> <span class="strategic">Strategic</span>
-          </h1>
-
-          <div class="divider" aria-hidden="true">
-            <span class="line"></span>
-            <span class="dot"></span>
-            <span class="line"></span>
-          </div>
-
-          <p class="subhead">
-            Where <span class="accent">strategy</span>, <span class="accent">presence</span>, and <span class="accent">perception</span> align.
-          </p>
-
-          <div class="cta-wrap">
-            <a class="cta" href="https://www.voxluxstrategic.com/our-expertise" target="_top" rel="noopener">
-              <span>Discover Our Services</span>
-              <span class="arrow" aria-hidden="true">→</span>
-            </a>
-          </div>
-        </div>
       </section>
     `;
   }
@@ -698,7 +457,7 @@ class VoxluxHero extends HTMLElement {
 
       if (idx > 0) {
         const winGeo = new THREE.BufferGeometry();
-        winGeo.setAttribute('position', new THREE.BufferAttribute(positions.slice(0, idx * 3), 3));
+        winGeo.setAttribute("position", new THREE.BufferAttribute(positions.slice(0, idx * 3), 3));
         const pts = new THREE.Points(winGeo, (rng() > 0.55 ? windowMatCream : windowMatGold).clone());
         pts.material.opacity *= (0.55 + rng() * 0.45);
         group.add(pts);
