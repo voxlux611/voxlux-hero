@@ -20,7 +20,7 @@ class VoxluxHero extends HTMLElement {
           height: 100%;
           overflow: hidden;
           background:
-            radial-gradient(ellipse at 50% 24%, #151a21 0%, #0b0d12 48%, #050608 100%);
+            radial-gradient(ellipse at 50% 24%, #161b22 0%, #0b0d12 48%, #050608 100%);
         }
 
         .stars {
@@ -28,22 +28,22 @@ class VoxluxHero extends HTMLElement {
           inset: 0;
           z-index: 1;
           pointer-events: none;
-          opacity: 0.35;
+          opacity: 0.30;
           background-image:
-            radial-gradient(1px 1px at 12% 16%, rgba(245,241,232,0.22), transparent),
-            radial-gradient(1px 1px at 28% 10%, rgba(245,241,232,0.18), transparent),
-            radial-gradient(1px 1px at 41% 18%, rgba(201,162,75,0.18), transparent),
-            radial-gradient(1px 1px at 58% 12%, rgba(245,241,232,0.18), transparent),
-            radial-gradient(1px 1px at 73% 9%, rgba(245,241,232,0.14), transparent),
-            radial-gradient(1px 1px at 86% 15%, rgba(201,162,75,0.18), transparent),
-            radial-gradient(1px 1px at 22% 28%, rgba(245,241,232,0.10), transparent),
-            radial-gradient(1px 1px at 64% 26%, rgba(245,241,232,0.12), transparent);
+            radial-gradient(1px 1px at 12% 16%, rgba(245,241,232,0.16), transparent),
+            radial-gradient(1px 1px at 28% 10%, rgba(245,241,232,0.14), transparent),
+            radial-gradient(1px 1px at 42% 18%, rgba(201,162,75,0.14), transparent),
+            radial-gradient(1px 1px at 58% 12%, rgba(245,241,232,0.12), transparent),
+            radial-gradient(1px 1px at 72% 9%, rgba(245,241,232,0.10), transparent),
+            radial-gradient(1px 1px at 86% 15%, rgba(201,162,75,0.12), transparent),
+            radial-gradient(1px 1px at 22% 28%, rgba(245,241,232,0.08), transparent),
+            radial-gradient(1px 1px at 64% 26%, rgba(245,241,232,0.08), transparent);
           animation: twinkle 8s ease-in-out infinite alternate;
         }
 
         @keyframes twinkle {
-          0% { opacity: 0.22; }
-          100% { opacity: 0.42; }
+          0% { opacity: 0.18; }
+          100% { opacity: 0.34; }
         }
 
         canvas {
@@ -62,55 +62,66 @@ class VoxluxHero extends HTMLElement {
           pointer-events: none;
           background:
             linear-gradient(180deg,
-              rgba(6,8,10,0.05) 0%,
+              rgba(6,8,10,0.02) 0%,
               rgba(6,8,10,0.00) 18%,
               rgba(6,8,10,0.00) 58%,
               rgba(4,5,7,0.34) 100%
             ),
             radial-gradient(ellipse at center,
-              transparent 30%,
-              rgba(4,5,7,0.18) 72%,
-              rgba(3,4,6,0.42) 100%
-            );
+              transparent 26%,
+              rgba(4,5,7,0.16) 72%,
+              rgba(3,4,6,0.42) 100%);
         }
 
         .spotlight {
           position: absolute;
           left: 50%;
           top: 50%;
-          width: 680px;
-          height: 680px;
+          width: 620px;
+          height: 620px;
           border-radius: 50%;
           transform: translate(-50%, -50%);
           z-index: 4;
           pointer-events: none;
-          opacity: 0.42;
+          opacity: 0.34;
           filter: blur(24px);
           mix-blend-mode: screen;
           background: radial-gradient(circle,
-            rgba(201,162,75,0.13) 0%,
-            rgba(201,162,75,0.06) 28%,
-            rgba(201,162,75,0.02) 46%,
-            transparent 66%);
+            rgba(201,162,75,0.10) 0%,
+            rgba(201,162,75,0.05) 28%,
+            rgba(201,162,75,0.015) 50%,
+            transparent 68%);
+        }
+
+        .frameGlow {
+          position: absolute;
+          inset: 0;
+          z-index: 5;
+          pointer-events: none;
+          box-shadow:
+            inset 0 0 120px rgba(201,162,75,0.06),
+            inset 0 0 200px rgba(255,255,255,0.02),
+            inset 0 -70px 120px rgba(0,0,0,0.25);
+          border: 1px solid rgba(201,162,75,0.06);
         }
 
         .vignette {
           position: absolute;
           inset: 0;
-          z-index: 5;
+          z-index: 6;
           pointer-events: none;
           background:
             radial-gradient(ellipse at center,
               transparent 34%,
-              rgba(3,4,6,0.20) 72%,
-              rgba(2,3,4,0.52) 100%);
+              rgba(3,4,6,0.18) 72%,
+              rgba(2,3,4,0.48) 100%);
         }
 
         @media (max-width: 768px) {
           .spotlight {
-            width: 420px;
-            height: 420px;
-            opacity: 0.30;
+            width: 400px;
+            height: 400px;
+            opacity: 0.25;
           }
         }
 
@@ -125,6 +136,7 @@ class VoxluxHero extends HTMLElement {
         <canvas aria-hidden="true"></canvas>
         <div class="atmosphere" aria-hidden="true"></div>
         <div class="spotlight" aria-hidden="true"></div>
+        <div class="frameGlow" aria-hidden="true"></div>
         <div class="vignette" aria-hidden="true"></div>
       </div>
     `;
@@ -205,15 +217,16 @@ class VoxluxHero extends HTMLElement {
     this.renderer.setClearColor(0x050608, 0);
 
     this.scene = new THREE.Scene();
-    this.scene.fog = new THREE.Fog(0x060709, 78, 250);
+    this.scene.fog = new THREE.Fog(0x060709, 66, 220);
 
-    this.startCamPos = new THREE.Vector3(0, 18, 58);
-    this.endCamPos = new THREE.Vector3(0, 9.5, 34);
+    /* Closer cinematic start and quicker move into immersive */
+    this.startCamPos = new THREE.Vector3(0, 14.5, 42);
+    this.endCamPos = new THREE.Vector3(0, 8.8, 28);
 
-    this.startLookAt = new THREE.Vector3(0, 9, -105);
-    this.endLookAt = new THREE.Vector3(0, 5.5, -42);
+    this.startLookAt = new THREE.Vector3(0, 8, -72);
+    this.endLookAt = new THREE.Vector3(0, 5.2, -28);
 
-    this.camera = new THREE.PerspectiveCamera(56, 1, 0.1, 1000);
+    this.camera = new THREE.PerspectiveCamera(58, 1, 0.1, 1000);
     this.camera.position.copy(this.startCamPos);
     this.camera.lookAt(this.startLookAt);
 
@@ -226,35 +239,41 @@ class VoxluxHero extends HTMLElement {
     const ambient = new THREE.AmbientLight(0xffffff, 0.52);
     this.scene.add(ambient);
 
-    const hemi = new THREE.HemisphereLight(0x2a2f38, 0x060709, 0.65);
+    const hemi = new THREE.HemisphereLight(0x2a2f38, 0x060709, 0.62);
     this.scene.add(hemi);
 
-    const key = new THREE.DirectionalLight(0xf2ead8, 0.22);
-    key.position.set(-10, 18, 12);
+    const key = new THREE.DirectionalLight(0xf2ead8, 0.20);
+    key.position.set(-12, 18, 14);
     this.scene.add(key);
 
-    const goldRim = new THREE.DirectionalLight(0xc9a24b, 0.48);
-    goldRim.position.set(10, 8, 16);
+    const goldRim = new THREE.DirectionalLight(0xc9a24b, 0.42);
+    goldRim.position.set(12, 10, 16);
     this.scene.add(goldRim);
 
+    /* More apparent leveled terrain / hills */
     const terrainHeight = (x, z) => {
-      const roadInfluence = Math.exp(-(x * x) / 180);
-      const broadRoll = Math.sin(z * 0.034) * 0.65;
-      const softBreak = Math.sin((z + x * 0.45) * 0.055) * 0.28;
-      const sideRise = Math.pow(Math.min(1, Math.abs(x) / 48), 1.7) * 5.6;
-      const centerCut = roadInfluence * 1.8;
-      return -2.85 + (broadRoll + softBreak) * (0.4 + Math.min(1, Math.abs(x) / 55) * 0.75) + sideRise - centerCut;
+      const broad = Math.sin(z * 0.035) * 0.72;
+      const secondary = Math.sin((z + x * 0.35) * 0.06) * 0.26;
+      const sideRise = Math.pow(Math.min(1, Math.abs(x) / 44), 1.6) * 7.0;
+      const roadCut = Math.exp(-(x * x) / 145) * 2.2;
+
+      let h = -3.2 + broad + secondary + sideRise - roadCut;
+
+      /* terrace / level feel */
+      h = Math.round(h * 3.2) / 3.2;
+
+      return h;
     };
 
     const roadHeight = (x, z) => {
       const base = terrainHeight(x, z);
-      const crown = 0.14 - Math.pow(x / 8, 2) * 0.14;
-      return base + 0.28 + crown;
+      const crown = 0.12 - Math.pow(x / 8, 2) * 0.12;
+      return base + 0.24 + crown;
     };
 
     this.terrainHeight = terrainHeight;
 
-    const terrainGeo = new THREE.PlaneGeometry(240, 390, 96, 180);
+    const terrainGeo = new THREE.PlaneGeometry(250, 370, 96, 170);
     terrainGeo.rotateX(-Math.PI / 2);
 
     const tPos = terrainGeo.attributes.position;
@@ -266,80 +285,54 @@ class VoxluxHero extends HTMLElement {
     terrainGeo.computeVertexNormals();
 
     const terrainMat = new THREE.MeshStandardMaterial({
-      color: 0x0a0d12,
-      roughness: 0.96,
-      metalness: 0.06
+      color: 0x090c11,
+      roughness: 0.98,
+      metalness: 0.04
     });
 
     const terrain = new THREE.Mesh(terrainGeo, terrainMat);
-    terrain.position.z = -85;
+    terrain.position.z = -70;
     this.world.add(terrain);
 
-    const roadWidth = 16;
-    const roadLength = 360;
-    const roadGeo = new THREE.PlaneGeometry(roadWidth, roadLength, 34, 180);
+    /* road with gentle shaping, no lane lines */
+    const roadWidth = 15.2;
+    const roadLength = 340;
+    const roadGeo = new THREE.PlaneGeometry(roadWidth, roadLength, 30, 170);
     roadGeo.rotateX(-Math.PI / 2);
 
     const rPos = roadGeo.attributes.position;
     for (let i = 0; i < rPos.count; i++) {
       const x = rPos.getX(i);
-      const z = rPos.getZ(i) - 85;
+      const z = rPos.getZ(i) - 70;
       rPos.setY(i, roadHeight(x, z));
     }
     roadGeo.computeVertexNormals();
 
     const roadMat = new THREE.MeshStandardMaterial({
-      color: 0x090c10,
+      color: 0x0a0d11,
       roughness: 1,
-      metalness: 0.04
+      metalness: 0.03
     });
 
     const road = new THREE.Mesh(roadGeo, roadMat);
-    road.position.z = -85;
+    road.position.z = -70;
     this.world.add(road);
 
-    const shoulderGeo = new THREE.PlaneGeometry(1.4, roadLength, 6, 180);
-    shoulderGeo.rotateX(-Math.PI / 2);
+    /* soft side edge glow instead of lane lines */
+    const edgeStripGeo = new THREE.PlaneGeometry(0.42, roadLength, 1, 220);
+    edgeStripGeo.rotateX(-Math.PI / 2);
 
-    const sPos = shoulderGeo.attributes.position;
-    for (let i = 0; i < sPos.count; i++) {
-      const x = sPos.getX(i);
-      const z = sPos.getZ(i) - 85;
-      const worldX = x;
-      sPos.setY(i, roadHeight(worldX, z) + 0.01);
-    }
-    shoulderGeo.computeVertexNormals();
-
-    const shoulderMat = new THREE.MeshStandardMaterial({
-      color: 0x11151b,
-      roughness: 0.95,
-      metalness: 0.08
-    });
-
-    const leftShoulder = new THREE.Mesh(shoulderGeo, shoulderMat);
-    leftShoulder.position.set(-8.4, 0, -85);
-    this.world.add(leftShoulder);
-
-    const rightShoulder = new THREE.Mesh(shoulderGeo.clone(), shoulderMat);
-    rightShoulder.position.set(8.4, 0, -85);
-    this.world.add(rightShoulder);
-
-    const laneGeo = new THREE.PlaneGeometry(0.22, roadLength, 1, 240);
-    laneGeo.rotateX(-Math.PI / 2);
-
-    const lPos = laneGeo.attributes.position;
-    for (let i = 0; i < lPos.count; i++) {
-      const x = lPos.getX(i);
-      const z = lPos.getZ(i) - 85;
-      lPos.setY(i, roadHeight(x, z) + 0.055);
+    const ePos = edgeStripGeo.attributes.position;
+    for (let i = 0; i < ePos.count; i++) {
+      const x = ePos.getX(i);
+      const z = ePos.getZ(i) - 70;
+      ePos.setY(i, roadHeight(x, z) + 0.05);
     }
 
-    const laneMat = new THREE.ShaderMaterial({
+    const edgeStripMat = new THREE.ShaderMaterial({
       transparent: true,
       depthWrite: false,
-      uniforms: {
-        uTime: { value: 0 }
-      },
+      uniforms: { uTime: { value: 0 } },
       vertexShader: `
         varying vec2 vUv;
         void main() {
@@ -353,47 +346,49 @@ class VoxluxHero extends HTMLElement {
         uniform float uTime;
 
         void main() {
-          float edgeFade = smoothstep(0.02, 0.15, vUv.y) * (1.0 - smoothstep(0.88, 0.98, vUv.y));
-          float pulse = 0.55 + 0.45 * sin(vUv.y * 42.0 - uTime * 1.05);
-          float alpha = edgeFade * pulse * 0.28;
+          float fadeEnds = smoothstep(0.03, 0.18, vUv.y) * (1.0 - smoothstep(0.84, 0.98, vUv.y));
+          float shimmer = 0.75 + 0.25 * sin(vUv.y * 32.0 - uTime * 0.8);
+          float alpha = fadeEnds * shimmer * 0.22;
           vec3 color = vec3(0.788, 0.635, 0.294);
           gl_FragColor = vec4(color, alpha);
         }
       `
     });
 
-    const laneLeft = new THREE.Mesh(laneGeo, laneMat);
-    laneLeft.position.set(-3.1, 0, -85);
-    this.world.add(laneLeft);
+    const leftEdge = new THREE.Mesh(edgeStripGeo, edgeStripMat);
+    leftEdge.position.set(-7.3, 0, -70);
+    this.world.add(leftEdge);
 
-    const laneRight = new THREE.Mesh(laneGeo.clone(), laneMat.clone());
-    laneRight.position.set(3.1, 0, -85);
-    this.world.add(laneRight);
+    const rightEdge = new THREE.Mesh(edgeStripGeo.clone(), edgeStripMat.clone());
+    rightEdge.position.set(7.3, 0, -70);
+    this.world.add(rightEdge);
 
-    this.laneMaterials = [laneLeft.material, laneRight.material];
+    this.edgeStripMaterials = [leftEdge.material, rightEdge.material];
 
     const boxGeo = new THREE.BoxGeometry(1, 1, 1);
+
     const edgeBaseMat = new THREE.LineBasicMaterial({
       color: 0xc9a24b,
       transparent: true,
-      opacity: 0.24,
+      opacity: 0.22,
       blending: THREE.AdditiveBlending
     });
 
     const makeBodyMaterial = () => new THREE.MeshPhongMaterial({
       color: 0x0d141d,
       emissive: 0x07090d,
-      shininess: 12,
+      shininess: 13,
       transparent: true,
       opacity: 0.97
     });
 
-    const makeWindowMaterial = () => new THREE.PointsMaterial({
-      color: 0xe7dcc5,
-      size: isMobile ? 0.14 : 0.18,
-      sizeAttenuation: true,
+    /* Soft streak windows */
+    const windowGeo = new THREE.PlaneGeometry(0.42, 0.08);
+
+    const makeWindowMaterial = () => new THREE.MeshBasicMaterial({
+      color: 0xe8ddc8,
       transparent: true,
-      opacity: 0.54,
+      opacity: 0.18,
       depthWrite: false,
       blending: THREE.AdditiveBlending
     });
@@ -417,10 +412,10 @@ class VoxluxHero extends HTMLElement {
       edges.position.copy(body.position);
       group.add(edges);
 
-      if (h > 16 && rng() > 0.45) {
-        const stepW = w * (0.55 + rng() * 0.20);
-        const stepD = d * (0.55 + rng() * 0.20);
-        const stepH = 2 + rng() * 3.5;
+      if (h > 15 && rng() > 0.42) {
+        const stepW = w * (0.58 + rng() * 0.16);
+        const stepD = d * (0.58 + rng() * 0.16);
+        const stepH = 1.8 + rng() * 3.0;
 
         const top = new THREE.Mesh(boxGeo, makeBodyMaterial());
         top.scale.set(stepW, stepH, stepD);
@@ -436,40 +431,39 @@ class VoxluxHero extends HTMLElement {
         group.add(topEdges);
       }
 
-      const floors = Math.max(3, Math.floor(h / 2.3));
-      const cols = Math.max(2, Math.floor(w / 0.95));
-      const positions = [];
+      /* consistent soft streak window pattern */
+      const floors = Math.max(4, Math.floor(h / 2.2));
+      const cols = Math.max(2, Math.floor(w / 1.0));
+      const yStart = baseY + h * 0.12;
+      const usableH = h * 0.72;
+      const usableW = w * 0.78;
 
       for (let fy = 0; fy < floors; fy++) {
         for (let fx = 0; fx < cols; fx++) {
-          if (rng() < 0.55) {
-            positions.push(
-              x - w / 2 + (fx + 0.5) * (w / cols),
-              baseY + (fy + 0.58) * (h / floors),
-              z + d / 2 + 0.03
+          if (rng() < 0.82) {
+            const streak = new THREE.Mesh(windowGeo, makeWindowMaterial());
+            streak.scale.x = 0.65 + rng() * 0.35;
+            streak.position.set(
+              x - usableW / 2 + (fx + 0.5) * (usableW / cols),
+              yStart + (fy + 0.5) * (usableH / floors),
+              z + d / 2 + 0.045
             );
+            group.add(streak);
           }
         }
       }
 
-      if (positions.length > 0) {
-        const geo = new THREE.BufferGeometry();
-        geo.setAttribute("position", new THREE.Float32BufferAttribute(positions, 3));
-        const windows = new THREE.Points(geo, makeWindowMaterial());
-        group.add(windows);
-      }
-
-      if (h > 20 && rng() > 0.62) {
-        const antH = 3 + rng() * 4;
+      if (h > 18 && rng() > 0.65) {
+        const antH = 2.8 + rng() * 3.6;
         const antenna = new THREE.Mesh(
-          new THREE.CylinderGeometry(0.04, 0.04, antH, 6),
+          new THREE.CylinderGeometry(0.035, 0.035, antH, 6),
           new THREE.MeshBasicMaterial({
             color: 0xc9a24b,
             transparent: true,
-            opacity: 0.42
+            opacity: 0.34
           })
         );
-        antenna.position.set(x + (rng() - 0.5) * w * 0.25, baseY + h + antH / 2, z);
+        antenna.position.set(x + (rng() - 0.5) * w * 0.22, baseY + h + antH / 2, z);
         group.add(antenna);
       }
 
@@ -477,36 +471,38 @@ class VoxluxHero extends HTMLElement {
     };
 
     this.buildings = [];
-    const corridorLength = 330;
-    const zStart = -245;
-    const zSpacing = 9.5;
+    this.corridorLength = 315;
+
+    const zStart = -235;
+    const zSpacing = 9.0;
     const rows = isMobile ? 22 : 30;
 
     const columns = [
-      -48, -42, -36, -30, -24, -18, -12,
-       12,  18,  24,  30,  36,  42,  48
+      -46, -40, -34, -28, -22, -16, -11,
+       11,  16,  22,  28,  34,  40,  46
     ];
 
     for (let ci = 0; ci < columns.length; ci++) {
       const laneX = columns[ci];
+
       for (let r = 0; r < rows; r++) {
-        if (rng() < 0.12) continue;
+        if (rng() < 0.08) continue;
 
-        const z = zStart + r * zSpacing + (rng() - 0.5) * 2.5;
-        const sideFactor = 1 - Math.min(1, Math.abs(laneX) / 50);
-        const w = 2.8 + rng() * 3.6;
-        const d = 2.8 + rng() * 3.4;
-        const h = (8 + Math.pow(rng(), 1.25) * 25) * (0.92 + sideFactor * 0.35);
+        const z = zStart + r * zSpacing + (rng() - 0.5) * 1.8;
+        const sideFactor = 1 - Math.min(1, Math.abs(laneX) / 48);
+        const w = 2.8 + rng() * 3.4;
+        const d = 2.8 + rng() * 3.2;
+        const h = (9 + Math.pow(rng(), 1.20) * 24) * (0.95 + sideFactor * 0.30);
 
-        const x = laneX + (rng() - 0.5) * 1.3;
+        const x = laneX + (rng() - 0.5) * 1.0;
         const group = buildBuilding(x, z, w, h, d);
+
         this.world.add(group);
         this.buildings.push(group);
       }
     }
 
-    this.corridorLength = corridorLength;
-    this.world.position.z = 110;
+    this.world.position.z = 98;
 
     this.clock = new THREE.Clock();
     this.elapsed = 0;
@@ -593,18 +589,18 @@ class VoxluxHero extends HTMLElement {
   updateCamera(progressRaw) {
     const progress = progressRaw * progressRaw * (3 - 2 * progressRaw);
 
-    this.currentMx += (this.targetMx - this.currentMx) * 0.03;
-    this.currentMy += (this.targetMy - this.currentMy) * 0.03;
+    this.currentMx += (this.targetMx - this.currentMx) * 0.035;
+    this.currentMy += (this.targetMy - this.currentMy) * 0.035;
 
     this.tempCam.lerpVectors(this.startCamPos, this.endCamPos, progress);
     this.tempLook.lerpVectors(this.startLookAt, this.endLookAt, progress);
 
-    this.tempCam.x += this.currentMx * 1.8;
-    this.tempCam.y += this.currentMy * 0.9 + Math.sin(this.elapsed * 0.20) * 0.15;
-    this.tempCam.z += Math.sin(this.elapsed * 0.10) * 0.25;
+    this.tempCam.x += this.currentMx * 1.6;
+    this.tempCam.y += this.currentMy * 0.75 + Math.sin(this.elapsed * 0.22) * 0.12;
+    this.tempCam.z += Math.sin(this.elapsed * 0.10) * 0.18;
 
-    this.tempLook.x += this.currentMx * 2.4;
-    this.tempLook.y += this.currentMy * 0.4;
+    this.tempLook.x += this.currentMx * 2.0;
+    this.tempLook.y += this.currentMy * 0.35;
 
     this.camera.position.copy(this.tempCam);
     this.camera.lookAt(this.tempLook);
@@ -615,23 +611,25 @@ class VoxluxHero extends HTMLElement {
       const dt = Math.min(this.clock.getDelta(), 0.05);
       this.elapsed += dt;
 
-      const speed = 7.2;
+      /* a little faster than before */
+      const speed = 8.8;
       this.world.position.z += speed * dt;
 
       for (let i = 0; i < this.buildings.length; i++) {
         const b = this.buildings[i];
         const worldZ = b.position.z + this.world.position.z;
-        if (worldZ > 52) {
+        if (worldZ > 44) {
           b.position.z -= this.corridorLength;
         }
       }
 
-      const introProgress = Math.min(1, this.elapsed / 10.0);
+      /* move into immersive faster */
+      const introProgress = Math.min(1, this.elapsed / 7.0);
       this.updateCamera(introProgress);
 
-      if (this.laneMaterials) {
-        for (let i = 0; i < this.laneMaterials.length; i++) {
-          this.laneMaterials[i].uniforms.uTime.value = this.elapsed;
+      if (this.edgeStripMaterials) {
+        for (let i = 0; i < this.edgeStripMaterials.length; i++) {
+          this.edgeStripMaterials[i].uniforms.uTime.value = this.elapsed;
         }
       }
 
